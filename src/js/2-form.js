@@ -3,8 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const emailInput = form.querySelector('input[name="email"]');
   const messageInput = form.querySelector('textarea[name="message"]');
 
-  const formData =
-    JSON.parse(localStorage.getItem('feedback-form-state')) || {};
+  const feedbackKey = 'feedback-form-state';
+  const formData = JSON.parse(localStorage.getItem(feedbackKey)) || {};
   if (formData.email) {
     emailInput.value = formData.email;
   }
@@ -14,19 +14,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
   form.addEventListener('input', () => {
     const formData = {
-      email: emailInput.value,
-      message: messageInput.value,
+      email: emailInput.value.trim(),
+      message: messageInput.value.trim(),
     };
-    localStorage.setItem('feedback-form-state', JSON.stringify(formData));
+    localStorage.setItem(feedbackKey, JSON.stringify(formData));
   });
 
   form.addEventListener('submit', event => {
     event.preventDefault();
-    const formData =
-      JSON.parse(localStorage.getItem('feedback-form-state')) || {};
+
     if (formData.email && formData.message) {
       console.log(formData);
-      localStorage.removeItem('feedback-form-state');
+      localStorage.removeItem(feedbackKey);
       emailInput.value = '';
       messageInput.value = '';
       alert('Дякуємо за ваш відгук!');
